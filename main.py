@@ -2,18 +2,42 @@
 
 def mainmenu(conn,sock):
 	tmp = ''
+	ans = 0
 	MenuList = ['1. Выделить ip\r\n','2. Найти пользователя\r\n','3. Удалить пользователя\r\n', '4. Удалить ПК\r\n','5. Выход\r\n']
 	for i in MenuList:
 		conn.send(i.encode('cp866'))
 
+	while "\rn" not in tmp:
+		data = conn.recv(1024)
+		tmp = data.decode('cp866')
+
+		try:
+			ans = int(tmp)
+
+			if ans==5:
+				break
+				conn.close()
+
+			if ans==1:
+				GiveIp(conn,sock)
+
+		except ValueError:
+			tmp = "Ошибка. Введите число: \r\n"
+			conn.send(tmp.encode('cp866'))
+
+	print(UnPass)
+
+def GiveIp(conn,sock):
+	Fio = "Введите ФИО: \r\n"
+	tmp = ""
+	conn.send(Fio.encode('cp866'))
+	Fio = ""
 	while "\n" not in tmp:
 		data = conn.recv(1024)
 		tmp = data.decode('cp866')
-		if tmp=="5":
-			break
-			conn.close()
-			
-	print(UnPass)
+		Fio = Fio + tmp
+
+	print(Fio)
 
 import socket
 
